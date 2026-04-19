@@ -7,7 +7,6 @@ import { readingTime } from "@lib/utils";
 import BackToPrevious from "@components/BackToPrevious.astro";
 import PostNavigation from "@components/PostNavigation.astro";
 import TableOfContents from "@components/TableOfContents.astro";
-import Giscus from "@components/Giscus.astro";
 
 export async function getStaticPaths() {
   const posts = (await getCollection("blog"))
@@ -53,10 +52,11 @@ const { Content, headings } = await render(post);
 
 <Layout title={post.data.title} description={post.data.description}>
   <Container>
-    <div class="animate">
+    <!-- Sticky back button stays visible while scrolling -->
+    <div class="sticky top-20 z-40 mb-8">
       <BackToPrevious href="/blog">Back to blog</BackToPrevious>
     </div>
-    <div class="my-10 space-y-1">
+    <div class="mb-10 space-y-1">
       <div class="animate flex items-center gap-1.5">
         <div class="font-base text-sm">
           <FormattedDate date={post.data.date} />
@@ -66,7 +66,7 @@ const { Content, headings } = await render(post);
           <div class="font-base text-sm">
             {readingTime(post.body)}
           </div>
-        )}        
+        )}
       </div>
       <h1 class="animate text-3xl font-semibold text-black dark:text-white">
         {post.data.title}
@@ -91,9 +91,6 @@ const { Content, headings } = await render(post);
       <Content />
       <div class="mt-24">
         <PostNavigation prevPost={prevPost} nextPost={nextPost} />
-      </div>
-      <div class="mt-24">
-        <Giscus />
       </div>
     </article>
   </Container>
